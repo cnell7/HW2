@@ -6,3 +6,6 @@
 #
 # Hello
 #
+
+def main():
+    
