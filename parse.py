@@ -7,11 +7,35 @@
 #               message tells the mail server which person is trying to
 #               email a message.
 
-#   Checks to make sure the string is not incomplete at the spot it is working on
+#   Purpose: Checks to make sure the string is not incomplete at the spot it is working on
+#   Input: Counter position code is at, and the string it
+#               is checking
+#   Output: None, will close program if the string is over
+#               and therefore incomplete before end of the
+#               SSMTP check
 def length_check(i, string):
     if i > (len(mail_from) - 1):
         print("ERROR -- incomplete input")
         exit()
+
+#   Purpose:
+#   Input: Counter position code is at, and the string it
+#               is checking
+#   Output: Will return the string position, i, that
+
+
+def skip_whitespace(i, string):
+    while mail_from[i] == " ":
+        i += 1
+        length_check(i, mail_from)
+    return i
+
+
+def special_check(i, string):
+    if string[i] == ("<" or ">" or "(" or ")" or "[" or "]" or "\'" or "." or "," or ";" or ":" or "@" or '"'):
+        return True
+    else:
+        return False
 
 
 # Get user input from keyboard
@@ -28,9 +52,7 @@ i = 5
 length_check(i, mail_from)
 
 #    <whitespace>
-while mail_from[i] == " ":
-    i += 1
-    length_check(i, mail_from)
+i = skip_whitespace(i, mail_from)
 
 #   "FROM:"
 if(mail_from[i:i+5] != "FROM:"):
@@ -42,21 +64,28 @@ i += 5
 #   Incomplete input check
 length_check(i, mail_from)
 
+#    <whitespace>
+i = skip_whitespace(i, mail_from)
+
 #   <path>
 if mail_from[i] != "<":
     print("ERROR -- path")
     exit()
 
 i += 1
+
 #   Incomplete input check
 length_check(i, mail_from)
+
+#    <whitespace>
+i = skip_whitespace(i, mail_from)
+
 local_part_start = i
 
 while mail_from[i] != "@":
-    if mail_from[i] == ("<" or ">" or "(" or ")" or "[" or "]" or "\'" or "." or "," or ";" or ":" or "@" or '"'):
+    if special_check(i, mail_from):
         print("ERROR -- local-part")
         exit()
-    # need to input special character checker
     if i == (len(mail_from) - 1):
         print("ERROR -- no @")
         exit()
@@ -65,5 +94,19 @@ while mail_from[i] != "@":
 if local_part_start == i:
     print("ERROR -- local-part")
     exit()
+
+local_part = mail_from[local_part_start:i]
+
+i += 1
+
+domain_start = i
+
+while i != (len(mail_from)):
+    if special_check(i, mail_from):
+        print("ERROR -- domain")
+        exit()
+    i += 1
+
+domain = mail_from[domain_start:i]
 
 print("Sender ok")
