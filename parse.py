@@ -1,12 +1,34 @@
-# Creator: Christian Nell
-# Date: 8/10/20
-# Purpose:  A program that determines if a message (a text string) is a valid 
-#   SMTP “MAIL FROM” message. This is a message that tells a mail server who 
-#   (which user) is trying to send an email message. 
-#
-# Hello
-#
+mail_from = raw_input()
 
-def main():
-    
-#hello hi
+if(mail_from[0:4]!="MAIL"):
+    print("ERROR -- mail")
+    exit()
+
+i = 5
+
+while mail_from[i] == " ":
+    i+=1
+
+if(mail_from[i:i+5]!="FROM:"):
+    print("ERROR -- from")
+    exit()
+
+i += 5
+
+while mail_from[i] == " ":
+    i+=1
+
+if mail_from[i] != "<":
+    print("ERROR -- path")
+    exit()
+
+i+=1
+local_part = mail_from[i]
+
+while mail_from[i] != "@":
+    #need to input special character checker
+    i+=1
+    if i == len(mail_from):
+        print("ERROR -- @")
+
+print("Sender ok")
