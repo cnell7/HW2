@@ -5,7 +5,7 @@
 #   Purpose: To check a Simple Mail Transfer Protocol "MAIL FROM" message
 #               and make sure it is following the correct syntax. This
 #               message tells the mail server which person is trying to
-#               an email message.
+#               email a message.
 
 #   Checks to make sure the string is not incomplete at the spot it is working on
 def length_check(i, string):
