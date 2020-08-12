@@ -13,6 +13,8 @@
 #   Output: None, will close program if the string is over
 #               and therefore incomplete before end of the
 #               SSMTP check
+
+
 def length_check(i, string):
     if i > (len(mail_from) - 1):
         print("ERROR -- incomplete input")
@@ -38,11 +40,21 @@ def special_check(i, string):
         return False
 
 
+def check_string(check, string):
+    if(check != string):
+        return False
+    else:
+        return True
+
+
+mailString = "MAIL"
+fromString = "FROM:"
+
 # Get user input from keyboard
 mail_from = raw_input()
 
 #   "MAIL"
-if(mail_from[0:4] != "MAIL"):
+if(not(check_string(mailString, mail_from[0:4]))):
     print("ERROR -- mail")
     exit()
 
@@ -55,7 +67,7 @@ length_check(i, mail_from)
 i = skip_whitespace(i, mail_from)
 
 #   "FROM:"
-if(mail_from[i:i+5] != "FROM:"):
+if(not(check_string(fromString, mail_from[i:i+5]))):
     print("ERROR -- from")
     exit()
 
