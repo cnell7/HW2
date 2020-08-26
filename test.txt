@@ -1,0 +1,120 @@
+MAIL FROM:<he@h>
+MAIL  FROM:<eh@h>
+MAIL  FROM: <he@h>
+MAIL        FROM:       <123@h>
+MAIL                 FROM:          <dijie2ei2ieie2j@e23456>
+MAIL FROM:<hi@e2.e4.e6>
+MAIL FROM:<jeffay@cs.unc.edu>
+MAIL FROM:<a@domain.com>
+MAIL    FROM:<test@domain.com>
+
+MAIL\tFROM: <jeffay@cs.unc.edu>
+MAIL \tFROM: <jeffay@cs.unc.edu>
+MAIL\t \tFROM: <jeffay@cs.unc.edu>
+MAIL \t\tFROM: <jeffay@cs.unc.edu>
+MAIL  \t\tFROM:<jeffay@cs.unc.edu>
+MAIL \t FROM: \t <hi@hi>
+
+MAIL FROM:<jeffay@cs.unc.edu> \t 
+MAIL FROM:<jeffay@cs.unc.edu>\t \t
+MAIL\t\t\t   \t\t FROM:\t\t  \t\t    <poop@op2.com>\t   \t
+
+ "<" | ">" | "(" | ")" | "[" | "]" | "\" | "."
+ | "," | ";" | ":" | "@" | """ 
+MAIL FROM:<j!effay@cs.unc.edu>
+MAIL FROM:<jeff#ay@cs.unc.edu>
+MAIL FROM:<je$ffay@cs.unc.edu>
+MAIL FROM:<jef%fay@cs.unc.edu>
+MAIL FROM:<je^ffay@cs.unc.edu>
+MAIL FROM:<jef&fay@cs.unc.edu>
+MAIL FROM:<jef*fay@cs.unc.edu>
+MAIL FROM:<jeff-ay@cs.unc.edu>
+MAIL FROM:<jeff_ay@cs.unc.edu>
+MAIL FROM:<jeffa=y@cs.unc.edu>
+MAIL FROM:<jeff+y@cs.unc.edu>
+MAIL FROM:<jeff/ay@cs.unc.edu>
+MAIL FROM:<jeff~ay@cs.unc.edu>
+MAIL FROM:<jef`fay@cs.unc.edu>
+MAIL FROM:<jef?fay@cs.unc.edu>
+MAIL FROM:<jef{fay@cs.unc.edu>
+MAIL FROM:<jeff}ay@cs.unc.edu>
+MAIL FROM:<とwd@awd>
+
+mAIL FROM:<he@h
+MAIL fROM:<he@h
+MAIL FROM:< he@h
+ MAIL FROM:<heh@h
+MAIL    FROM:
+MAILFROM:<
+MAIL ! FROM:<hi@hi
+MAIL! FROM:<hi@hi
+MAIL FROM:<hi\@dd
+MAIL FROM:<cnell@h.hi
+MAIL FROM:<cd@.
+MAIL FROM:<hi@hi.com
+MAIL FROM:<hi@hi.>
+MAIL FROM:<cnell@he.h.i
+MAIL FROM:<
+MAIL FROM:<hihi@hi\dd.com>
+MAIL FROM:<h\d@hi.com>
+\MAIL FROM:<d@d>
+MAIL FROM:<\dd@hi.com>
+MAIL FROM:\<hi@hi>
+MAIL FROM:<hi@hi.d\d.comm>
+hex(0)
+MAIL FROM:<test.email.with+symbol@domain.com>
+MAIL FROM:<example.com>
+MAIL FROM:<A@b@c@domain.com>
+MAIL FROM:<abc\"test\"email@domain.com>
+MAIL FROML<.test@domain.com>
+MAIL FROM:<test@domain..com>
+MAIL FROM:< test@domain.com>
+MAIL FROM:<test@domain.com >
+MAIL FROM:<test @domain.com>
+MAIL FROM:<test@domain .com>
+MAIL FROM:<test@9round.com>
+MAIL FROM:<hi\n@test.com>
+
+
+MAILFROM:<jeffay@cs.unc.edu>
+MAIL FROM:< jeffay@cs.unc.edu>
+MAIL FROM:<j effay@cs.unc.edu>
+
+MAIL FROM:<jeff ay@cs.unc.edu>
+MAIL FROM:<jeffay @cs.unc.edu>
+MAIL FROM:<jeffay@ cs.unc.edu>
+MAIL FROM:<jeffay@c s.unc.edu>
+MAIL FROM:<jeffay@cs .unc.edu>
+MAIL FROM:<jeffay@cs. unc.edu>
+MAIL FROM:<jeffay@cs.u nc.edu>
+MAIL FROM:<jeffay@cs.un c.edu>
+MAIL FROM:<jeffay@cs.unc .edu>
+MAIL FROM:<jeffay@cs.unc.edu >
+
+
+MAIL FROM:<je<ffay@cs.unc.edu>
+MAIL FROM:<jef>fay@cs.unc.edu>
+MAIL FROM:<jeff(ay@cs.unc.edu>
+MAIL FROM:<jeffa)y@cs.unc.edu>
+MAIL FROM:<jeff[ay@cs.unc.edu>
+MAIL FROM:<jeffa]y@cs.unc.edu>
+MAIL FROM:<jeffa\y@cs.unc.edu>
+MAIL FROM:<jeff.ay@cs.unc.edu>
+MAIL FROM:<jef,fay@cs.unc.edu>
+MAIL FROM:<jeff;ay@cs.unc.edu>
+MAIL FROM:<jeff:ay@cs.unc.edu>
+MAIL FROM:<jeff@ay@cs.unc.edu>
+MAIL FROM:<jeff"ay@cs.unc.edu>
+
+MAIL FROM:<jeffay@c!s.unc.edu>
+MAIL FROM:<jeffay@c@s.unc.edu>
+MAIL FROM:<jeffay@c#s.unc.edu>
+MAIL FROM:<jeffay@c$s.unc.edu>
+MAIL FROM:<jeffay@c%s.unc.edu>
+MAIL FROM:<jeffay@cs.u'nc.edu>
+MAIL FROM:<jeffay@cs.u}nc.edu>
+MAIL FROM:<jeffay@cs.u}nc.edu>>
+
+
+
+

@@ -13,14 +13,17 @@
 #       Signature: _Christian Nell__
 import sys
 #   Called to print out incorrect input before returning and showing ERROR -- token
+
+
 def echo(string):
     counter = 0
     copy = string
     while(CRLF(string) == False):
-         string = string[1:]
-         counter +=1
+        string = string[1:]
+        counter += 1
     print(copy[0:counter])
     return False
+
 
 def mail_from_cmd(string):
     echo(string)
@@ -122,8 +125,10 @@ def path(string):
 
 def mailbox(string):
     #  <local-part>
+    copy = string
     string = local_part(string)
-    if(string == False):
+    if(string == False or (copy[0] == string[0])):
+        print("ERROR -- local-part")
         return False
     #  "@"
     if(string[0] != '@'):
@@ -231,7 +236,7 @@ def CRLF(string):
 
 def special(c):
     #   special list ... shouldn't be in input
-    special_list = ['<', '>', '(', ')','[', ']',
+    special_list = ['<', '>', '(', ')', '[', ']',
                     '\\', '.', ',', ';', ':', '@', '"']
     if c in special_list:
         return True
