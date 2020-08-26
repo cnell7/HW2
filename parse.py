@@ -1,258 +1,247 @@
 #   SMTP "MAIL FROM" message checker
 #   Author: Christian Nell
+#   Onyen: cnell
 #   PID: 7302-29326
 #   Date: 8/11/20
 #   Purpose: To check a Simple Mail Transfer Protocol "MAIL FROM" message
 #               and make sure it is following the correct syntax. This
 #               message tells the mail server which person is trying to
 #               email a message.
+#
+#   UNC Honor Pledge: I certify that no unauthorized assistance has been received or
+#       given in the completion of this work
+#       Signature: _Christian Nell__
+import sys
+#   Called to print out incorrect input before returning and showing ERROR -- token
+def echo(string):
+    counter = 0
+    copy = string
+    while(CRLF(string) == False):
+         string = string[1:]
+         counter +=1
+    print(copy[0:counter])
+    return False
 
-#   Purpose: Checks to make sure the string is not incomplete at the spot it is working on
-#   Input: Counter position code is at, and the string it
-#               is checking
-#   Output: None, will close program if the string is over
-#               and therefore incomplete before end of the
-#               SSMTP check
+def mail_from_cmd(string):
+    echo(string)
+    mailString = "MAIL"
+    fromString = "FROM:"
+    # MAIL
+    mail = string[0:4]
+    if(not(mailString == mail)):
+        print("ERROR -- mail-from-cmd")
+        return False
+    string = string[4:]
+    #    <whitespace>
+    if(SP(string) == False):
+        print("ERROR -- whitespace")
+        return False
+    string = whitespace(string)
+    #   "FROM:"
+    if(not(fromString == string[0:5])):
+        print("ERROR -- mail-from-cmd")
+        return False
+    string = string[5:]
+    #    <nullspace>
+    string = nullspace(string)
+    #   <reverse-path>
+    string = reverse_path(string)
+    if(not(string)):
+        return False
+    #    <nullspace>
+    string = nullspace(string)
+    if(not(string)):
+        print("ERROR -- nullspace")
+        return False
+    #   <CLRF>
+    string = CRLF(string)
+    if(string == False):
+        print("ERROR -- CRLF")
+        return False
+    #  Sender ok, and end of line
+    if(string == True):
+        print("Sender ok")
+        return True
+    #  Sender ok, but not end of line
+    print("Sender ok")
+    return mail_from_cmd(string)
 
 
-def length_check(i, string):
-    if i > (len(string) - 1):
-        print("ERROR -- incomplete input")
-        return exit()
-
-#   Purpose:
-#   Input: Counter position code is at, and the string it
-#               is checking
-#   Output: Will return the string position, i, that
+def whitespace(string):
+    #   <SP> | <SP> <whitespace>
+    if(SP(string) == False):
+        return string[0:]
+    string = SP(string)
+    return whitespace(string)
 
 
-def exit():
+def SP(string):
+    #   the space or tab char
+    if(string[0] == ' ' or string[0] == '\t'):
+        return string[1:]
+    elif(string[0] == '\\'):
+        if(string[1] == 't'):
+            return string[2:]
     return False
 
 
-def mail_from_cmd(string):
-    mailString = "MAIL"
-    fromString = "FROM:"
-    #   "MAIL"
-    if(not(mailString == string[0:4])):
-        print("ERROR -- mail-from-cmd")
-        return exit()
-    i = 4
-    #    <whitespace>
-    if(not(whitespace(i, string))):
-        return exit()
-    i = whitespace(i, string)
-    #   "FROM:"
-    if(not(fromString == string[i:i+5])):
-        print("ERROR -- mail-from-cmd")
-        return exit()
-    i += 5
-    #    <nullspace>
-    i = nullspace(i, string)
-    if (nullspace(i, string) == False):
-        return exit()
-    #   <reverse-path>
-    if (reverse_path(i, string) == False):
-        return exit()
-    #    <nullspace>
-    i = nullspace(i, string)
-    #   <CLRF>
-    CRLF(i, string)
-    print("Sender ok")
+def nullspace(string):
+    #   <null> | <whitespace>
+    if(null(string[0])):
+        return string
+    return whitespace(string)
+
+
+def null(c):
+    #  no character
+    if((c != ' ') or (c != '\t')):
+        return False
     return True
 
 
-def whitespace(i, string):
-    if(SP(i, string) == False):
-        print("ERROR -- whitespace")
+def reverse_path(string):
+    #  <path>
+    return path(string)
+
+
+def path(string):
+    # "<"
+    if(string[0] != '<'):
+        print("ERROR -- path")
         return False
-    while SP(i, string):
-        i += 1
-        length_check(i, string)
-    return i
-
-
-def SP(i, string):
-    if ((" " == string[i]) or ("  " == string[i])):
-        return True
-    else:
+    #  <mailbox>
+    string = mailbox(string[1:])
+    if(string == False):
         return False
-
-
-def nullspace(i, string):
-    if(null(i, string) == True):
+    #  ">"
+    if(string[0] != '>'):
+        print("ERROR -- path")
         return False
-    if(not(SP(i, string))):
-        return i
-    i = whitespace(i, string)
-    return i
-
-    # NEEDS WORK
+    return string[1:]
 
 
-def null(i, string):
-    if (length_check(i, string) == False):
+def mailbox(string):
+    #  <local-part>
+    string = local_part(string)
+    if(string == False):
+        return False
+    #  "@"
+    if(string[0] != '@'):
+        print("ERROR -- mailbox")
+        return False
+    #  <domain>
+    string = domain(string[1:])
+    if(string == False):
+        return False
+    return string
+
+
+def local_part(string):
+    #   <string>
+    string = string_(string)
+    return string
+
+
+def string_(string):
+    #   <char> | <char> <string>
+    if(char(string) == False):
+        return string
+    return string_(string[1:])
+
+
+def char(string):
+    #   any one of the printable ASCII characters, but not any
+    #       of <special> or <SP>
+    if(special(string[0]) or SP(string) or not(ord(string[0]) < 128) or CRLF(string[0])):
+        return False
+    return True
+
+
+def domain(string):
+    #   <element> | <element> "." <domain>
+    string = element(string)
+    if(string == False):
+        print("ERROR -- domain")
+        return False
+    if(string[0] == '.'):
+        string = domain(string[1:])
+    return string
+
+
+def element(string):
+    #  <letter> | <name>
+    if(not(letter(string[0]))):
+        return False
+    if(name(string) != False):
+        string = name(string)
+    elif():
+        string = string[1:]
+    return string
+
+
+def name(string):
+    #   <letter> <let-dig-str>
+    if(not(letter(string[0]))):
+        return False
+    return let_dig_str(string)
+
+
+def letter(c):
+    #   any one of the 52 alphabetic characters A through Z
+    #       in upper case and a through z in lower case
+    if c.isalpha():
         return True
     return False
 
 
-def reverse_path(i, string):
-    return path(i, string)
+def let_dig_str(string):
+    #   <let-dig> | <let-dig> <let-dig-str>
+    if(not(let_dig(string[0]))):
+        return string
+    return let_dig_str(string[1:])
 
 
-def path(i, string):
-    #   "<"
-    if string[i] != "<":
-        print("ERROR -- path")
-        return exit()
-
-    i += 1
-
-    #   Incomplete input check
-    length_check(i, string)
-
-    #    <mailbox>
-    if (mailbox(i, string) == False):
-        return False
-    return i
-
-
-def mailbox(i, string):
-    if (local_part(i, string) == False):
-        return False
-    i = 1 + local_part(i, string)
-
-    if (domain(i, string) == False):
-        return False
-    return i
-
-
-def local_part(i, string):
-    local_part_start = i
-
-    while string[i] != "@":
-        if (string_(i, string)):
-            print("ERROR -- local-part")
-            return exit()
-        if i == (len(string) - 1):
-            print("ERROR -- no @")
-            return exit()
-        i += 1
-
-    if local_part_start == i:
-        print("ERROR -- local-part")
-        return exit()
-
-    local_part = string[local_part_start:i]
-    return i
-
-
-def string_(i, string):
-    if(special(i, string) or SP(i, string)):
+def let_dig(c):
+    #  <letter> | <digit>
+    if(letter(c) or digit(c)):
         return True
-    else:
-        return False
+    return False
 
 
-def char(i, string):
-    return null
-
-
-def domain(i, string):
-    domain_start = i
-
-    while i != (len(string)):
-        if special(i, string):
-            print("ERROR -- domain")
-            return exit()
-        i += 1
-
-    domain = string[domain_start:i]
-    return i
-
-
-def element():
-    return null
-
-
-def name():
-    return null
-
-
-def letter():
-    return null
-
-
-def let_dig_str():
-    return null
-
-
-def let_dig():
-    return null
-
-
-def digit():
-    return null
-
-
-def CRLF(i, string):
-    return null
-
-
-def special(i, string):
-    special_list = ["<", ">", "(", ")", "[", "]",
-                    "\'", ".", ",", ";", ":", "@", '"']
-    if string[i] in special_list:
+def digit(c):
+    #    any one of the ten digits 0 through 9
+    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    if c in digits:
         return True
-    else:
-        return False
+    return False
+
+
+def CRLF(string):
+    #    the newline character
+    if(string[0] == '\n'):
+        string = string[1:]
+        if(len(string) == 0):
+            return True
+        return string[1:]
+    if(string[0] == '\\'):
+        if(string[1] == 'n'):
+            return string[2:]
+    return False
+
+
+def special(c):
+    #   special list ... shouldn't be in input
+    special_list = ['<', '>', '(', ')','[', ']',
+                    '\\', '.', ',', ';', ':', '@', '"']
+    if c in special_list:
+        return True
+    return False
 
 
 def main():
-    # Get user input from keyboard
-    # mail_from = raw_input()
-
-    pass1 = "MAIL FROM:<he@h"
-    pass2 = "MAIL  FROM:<eh@h"
-    pass3 = "MAIL  FROM: <he@h"
-    pass4 = "MAIL        FROM:       <heh@h"
-
-    fail1 = "mAIL FROM:<he@h"
-    fail2 = "MAIL fROM:<he@h"
-    fail3 = "MAIL FROM:< he@h"
-    fail4 = " MAIL FROM:<heh@h"
-    fail5 = "MAIL    FROM:"
-    fail6 = "MAILFROM:<"
-    fail7 = "MAIL ! FROM:<hi@hi"
-    fail8 = "MAIL! FROM:<hi@hi"
-
-    print("pass")
-    print("1")
-    mail_from_cmd(pass1)
-    print("2")
-    mail_from_cmd(pass2)
-    print("3")
-    mail_from_cmd(pass3)
-    print("4")
-    mail_from_cmd(pass4)
-
-    print("\nfail")
-    print("1 = mail from")
-    mail_from_cmd(fail1)
-    print("2 = mail from")
-    mail_from_cmd(fail2)
-    print("3 = local part")
-    mail_from_cmd(fail3)
-    print("4 = mail from")
-    mail_from_cmd(fail4)
-    print("5 = incomplete")
-    mail_from_cmd(fail5)
-    print("6 = whitespace")
-    mail_from_cmd(fail6)
-    print("7 = mail from")
-    mail_from_cmd(fail7)
-    print("8 = whitespace")
-    mail_from_cmd(fail8)
+    #  Get line of input from terminal and check in mail_from_cmd
+    for line in sys.stdin:
+        mail_from_cmd(line)
 
 
 main()
