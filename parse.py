@@ -1,5 +1,5 @@
 #   SMTP "MAIL FROM" message checker
-#   Author: Christian Nell
+#   Author: Christian Nell ddd
 #   Onyen: cnell
 #   PID: 7302-29326
 #   Date: 8/11/20
