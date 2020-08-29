@@ -12,6 +12,7 @@
 #       given in the completion of this work
 #       Signature: _Christian Nell__
 import sys
+import shutil
 #   Called to print out incorrect input before returning and showing ERROR -- token
 
 
@@ -310,6 +311,7 @@ def call_command(string, count):
         if(count < 1):
             return error503(string)
         if(rcpt_to(string)):
+            f = open("forward", "w+")
             return ok250(count)
         return error501(string)
     elif(check_data(string) != False):
