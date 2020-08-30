@@ -124,6 +124,23 @@ DATA
 hwihdwihd
 .
 
+MAIL FROM:<hi@hi.com>
+RCPT TO:<no@no>
+RCPT TO:<yes@yes>
+RCPT TO:<maybe@maybe>
+DATA
+This is a real message
+I dont want anyone to know
+
+yeah.
+ .
+
+dd
+
+
+.
+
+
 MAIL FROM:<d@d>
 RCPT TO:<d@k>
 RCPT TO:<poo@op>
@@ -141,14 +158,22 @@ MAIL FROM:<d@d>
 RCPT TO:<d@k>
 RCPT TO:<poo@op>
 DATA
+DATA
 hwihdwihd
 awda
+RCPT TO:<hidhdhi@d>
 MAIL FROM:<hi@hi>
 awd
 awdawdawd
 ..
 wdw
 .
+
+MAIL FROM:<h@h>
+DATA
+hi
+.
+
 
 mAIL FROM:<hi@hi>
 RCPT TO:<d@k>

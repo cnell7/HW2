@@ -299,6 +299,7 @@ def data(string):
     echo(string)
     if(string[0] == '.'):
         if(CRLF(string[1:])):
+            datas[-1] = datas[-1].rstrip()
             return -2
     datas.append(string)
     return -1
@@ -307,7 +308,7 @@ def data(string):
 
 
 def check_data(string):
-    echo(string)
+    # echo(string)
     if(string[0:4] != "DATA"):
         return False
     string = string[4:]
@@ -342,7 +343,6 @@ def to(string):
 
 
 def call_command(string, count):
-    
     #   DATA (store input, then write)
     if(count == -1):
         copy = data(string)
@@ -371,6 +371,7 @@ def call_command(string, count):
     elif(check_data(string) != False):
         if(count < 2):
             return error503(string)
+        echo(string)
         i = 1
         while(i < len(mailboxs)):
             f = open("forward/" + getMailbox(mailboxs[i]), "a+")
