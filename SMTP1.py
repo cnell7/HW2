@@ -13,6 +13,7 @@
 #       Signature: _Christian Nell__
 import sys
 import shutil
+mailboxs = []
 #   Called to print out incorrect input before returning and showing ERROR -- token
 
 
@@ -290,21 +291,36 @@ def forward_path(string):
 
 
 def data(string):
-    return null
+    for m in mailboxs:
+        if(string[0] == '.'):
+            if(CRLF(string[1:])):
+                return 0
+        f = open("forward/"+m, "a+")
+        f.write(string)
+    return -1
 
 
 def check_data(string):
-    return False
+    echo(string)
+    if(string[0:4] != "DATA"):
+        return False
+    string = string[4:]
+    nullspace(string)
+    if(CRLF(string) == False):
+        return False
+    return True
 
 
 def getMailbox(string):
-    start = ""
-    while(string[0] != '<'):
-        string = string[1:]
-    start = string
-    while(string[0] != '>'):
-        string = string[1:]
-    return start[:i-1]
+    count = 0
+    while(string[count] != '<'):
+        count += 1
+    count += 1
+    string = string[count:]
+    count = 0
+    while(string[count] != '>'):
+        count += 1
+    return string[:count]
 
 
 def call_command(string, count):
@@ -318,18 +334,20 @@ def call_command(string, count):
         if(count < 1):
             return error503(string)
         if(rcpt_to(string)):
-            f = open("forward/" + getMailbox(string), "w+")
+            mailboxs.append(getMailbox(string))
+            open("forward/" + getMailbox(string), "w+")
             return ok250(count)
         return error501(string)
     elif(check_data(string) != False):
         if(count < 2):
             return error503(string)
-        if(data(string)):
-            return ok250(count)
-        return error501(string)
+        count = -1
+        return count
+    elif(count == -1):
+        return data(string)
     else:
         return error500(string)
-    return True
+
 
 #   500 Syntax error
 
