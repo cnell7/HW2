@@ -290,6 +290,7 @@ def forward_path(string):
 #############################################################
 
 
+#   Takes line of input and appends to list of RCPT TO: files
 def data(string):
     for m in mailboxs:
         if(string[0] == '.'):
@@ -299,7 +300,7 @@ def data(string):
         f.write(string)
     return -1
 
-
+#   Makes sure the 'DATA' command has been typed correctly
 def check_data(string):
     echo(string)
     if(string[0:4] != "DATA"):
@@ -311,6 +312,7 @@ def check_data(string):
     return True
 
 
+#   Gets the mailbox of the RCPT TO: to make a file name
 def getMailbox(string):
     count = 0
     while(string[count] != '<'):
@@ -322,14 +324,16 @@ def getMailbox(string):
         count += 1
     return string[:count]
 
-
+#   Selects the correct command to call and throws error if needed
 def call_command(string, count):
+    #   MAIL FROM:
     if(check_mail_from(string) != False):
         if(count != 0):
             return error503(string)
         if(mail_from_cmd(string)):
             return ok250(count)
         return error501(string)
+    #   RCPT TO:
     elif(check_rcpt_to(string) != False):
         if(count < 1):
             return error503(string)
@@ -338,13 +342,16 @@ def call_command(string, count):
             open("forward/" + getMailbox(string), "w+")
             return ok250(count)
         return error501(string)
+    #   DATA
     elif(check_data(string) != False):
         if(count < 2):
             return error503(string)
         count = -1
         return count
+    #   DATA (input)
     elif(count == -1):
         return data(string)
+    #   Unrecognized command
     else:
         return error500(string)
 
@@ -372,7 +379,7 @@ def error503(string):
     print("503 Bad sequence of commands")
     return False
 
-
+#   250 OK
 def ok250(count):
     print("250 OK")
     count += 1
@@ -384,7 +391,7 @@ def main():
     #  Get line of input from terminal and check in mail_from_cmd
     for line in sys.stdin:
         count = call_command(line, count)
-        if(not(count)):
+        if(not(count)): #   False = start over from MAIL FROM command
             count = 0
 
 
