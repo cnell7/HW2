@@ -39,17 +39,14 @@ def mail_from_cmd(string):
     #   <reverse-path>
     string = reverse_path(string)
     if(not(string)):
-        print("501 Syntax error in parameters or arguments")
         return False
     #    <nullspace>
     string = nullspace(string)
     if(not(string)):
-        print("501 Syntax error in parameters or arguments")
         return False
     #   <CLRF>
     string = CRLF(string)
     if(string == False):
-        print("501 Syntax error in parameters or arguments")
         return False
     #  Sender ok, and end of line
     if(string == True):
@@ -266,10 +263,6 @@ def rcpt_to(string):
     return True
 
 
-def forward_path(string):
-    return path(string)
-
-
 def check_rcpt_to(string):
     rcptString = "RCPT"
     toString = "TO:"
@@ -287,6 +280,10 @@ def check_rcpt_to(string):
     string = string[3:]
     return string
 
+
+def forward_path(string):
+    return path(string)
+
 #############################################################
 ##############              DATA               ##############
 #############################################################
@@ -300,6 +297,16 @@ def check_data(string):
     return False
 
 
+def getMailbox(string):
+    start = ""
+    while(string[0] != '<'):
+        string = string[1:]
+    start = string
+    while(string[0] != '>'):
+        string = string[1:]
+    return start[:i-1]
+
+
 def call_command(string, count):
     if(check_mail_from(string) != False):
         if(count != 0):
@@ -311,7 +318,7 @@ def call_command(string, count):
         if(count < 1):
             return error503(string)
         if(rcpt_to(string)):
-            f = open("forward", "w+")
+            f = open("forward/" + getMailbox(string), "w+")
             return ok250(count)
         return error501(string)
     elif(check_data(string) != False):

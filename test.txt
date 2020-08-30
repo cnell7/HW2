@@ -118,3 +118,5 @@ MAIL FROM:<jeffay@cs.u}nc.edu>>
 
 
 
+MAIL FROM:<d@d>
+RCPT TO:<d@k>
