@@ -14,6 +14,7 @@
 import sys
 import shutil
 mailboxs = []
+datas = []
 #   Called to print out incorrect input before returning and showing ERROR -- token
 
 
@@ -245,6 +246,7 @@ def special(c):
 ##############            RCPT TO              ##############
 #############################################################
 
+#   Makes sure the RCPT TO: syntax is all corect
 def rcpt_to(string):
     echo(string)
     #   checks RCPT TO: command
@@ -262,6 +264,8 @@ def rcpt_to(string):
     if(not(string)):
         return False
     return True
+
+#   Makes sure the 'RCPT TO:' command has been typed correctly
 
 
 def check_rcpt_to(string):
@@ -292,15 +296,16 @@ def forward_path(string):
 
 #   Takes line of input and appends to list of RCPT TO: files
 def data(string):
-    for m in mailboxs:
-        if(string[0] == '.'):
-            if(CRLF(string[1:])):
-                return 0
-        f = open("forward/"+m, "a+")
-        f.write(string)
+    echo(string)
+    if(string[0] == '.'):
+        if(CRLF(string[1:])):
+            return -2
+    datas.append(string)
     return -1
 
 #   Makes sure the 'DATA' command has been typed correctly
+
+
 def check_data(string):
     echo(string)
     if(string[0:4] != "DATA"):
@@ -324,13 +329,32 @@ def getMailbox(string):
         count += 1
     return string[:count]
 
+
+def from_(string):
+    return "From: <" + getMailbox(string) + ">"
+
+
+def to(string):
+    return "To: <" + getMailbox(string) + ">"
+
+
 #   Selects the correct command to call and throws error if needed
+
+
 def call_command(string, count):
+    
+    #   DATA (store input, then write)
+    if(count == -1):
+        copy = data(string)
+        if(copy == -2):
+            return writeData()
+        return copy
     #   MAIL FROM:
-    if(check_mail_from(string) != False):
+    elif(check_mail_from(string) != False):
         if(count != 0):
             return error503(string)
         if(mail_from_cmd(string)):
+            mailboxs.append(from_(string))
             return ok250(count)
         return error501(string)
     #   RCPT TO:
@@ -338,22 +362,42 @@ def call_command(string, count):
         if(count < 1):
             return error503(string)
         if(rcpt_to(string)):
-            mailboxs.append(getMailbox(string))
-            open("forward/" + getMailbox(string), "w+")
+            mailboxs.append(to(string))
+            f = open("forward/" + getMailbox(string), "w+")
+            f.close()
             return ok250(count)
         return error501(string)
     #   DATA
     elif(check_data(string) != False):
         if(count < 2):
             return error503(string)
+        i = 1
+        while(i < len(mailboxs)):
+            f = open("forward/" + getMailbox(mailboxs[i]), "a+")
+            f.close()
+            i += 1
+        print("354 Start mail input; end with <CRLF>.<CRLF>")
         count = -1
         return count
-    #   DATA (input)
-    elif(count == -1):
-        return data(string)
     #   Unrecognized command
     else:
         return error500(string)
+
+#   After full correct input, we will write all From, To and Data messages
+#       to all RCPT TO: files
+
+
+def writeData():
+    i = 1
+    while(i < len(mailboxs)):
+        f = open("forward/"+getMailbox(mailboxs[i]), "a+")
+        for m in mailboxs:
+            f.write(m+'\n')
+        for d in datas:
+            f.write(d)
+        f.close()
+        i += 1
+    return 0
 
 
 #   500 Syntax error
@@ -380,6 +424,8 @@ def error503(string):
     return False
 
 #   250 OK
+
+
 def ok250(count):
     print("250 OK")
     count += 1
@@ -391,8 +437,10 @@ def main():
     #  Get line of input from terminal and check in mail_from_cmd
     for line in sys.stdin:
         count = call_command(line, count)
-        if(not(count)): #   False = start over from MAIL FROM command
+        if(not(count)):  # False = start over from MAIL FROM command
             count = 0
+    if(count != 0):
+        error501("Incomplete data input")
 
 
 main()

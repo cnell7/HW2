@@ -124,3 +124,58 @@ DATA
 hwihdwihd
 .
 
+MAIL FROM:<d@d>
+RCPT TO:<d@k>
+RCPT TO:<poo@op>
+DATA
+hwihdwihd
+awda
+awd
+awdawdawd
+..
+wdw
+.
+
+
+MAIL FROM:<d@d>
+RCPT TO:<d@k>
+RCPT TO:<poo@op>
+DATA
+hwihdwihd
+awda
+MAIL FROM:<hi@hi>
+awd
+awdawdawd
+..
+wdw
+.
+
+mAIL FROM:<hi@hi>
+RCPT TO:<d@k>
+DATA
+hwihdwihd
+.
+
+MAIL FROM:<d@d>
+RcPT TO:<d@k>
+DATA
+hwihdwihd
+.
+
+MAIL FROM:<d@d>
+RCPT TO:<d@k>
+DaTA
+hwihdwihd
+.
+
+MAIL FROM:<d@d>
+RCPT TO:<d@k>
+DATA
+.
+
+MAIL FROM:<d@d>
+RCPT TO:<d@k>
+DATA
+hwihdwihd
+
+
