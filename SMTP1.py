@@ -25,7 +25,7 @@ def echo(string):
         string = string[1:]
         counter += 1
     print(copy[0:counter])
-    return False
+    return string[2:]
 
 #############################################################
 ##############            MAIL FROM            ##############
@@ -47,15 +47,7 @@ def mail_from_cmd(string):
     if(not(string)):
         return False
     #   <CLRF>
-    string = CRLF(string)
-    if(not(string)):
-        return False
-    #  Sender ok, and end of line
-    if(string == True):
-        return True
-    #   Sender ok, not end of line
-    if(len(string) > 1):
-        return string
+    return CRLF(string)
 
 
 def check_mail_from(string):
@@ -263,15 +255,7 @@ def rcpt_to(string):
     #   <nullspace>
     string = nullspace(string)
     #   <CRLF>
-    string = CRLF(string)
-    if(not(string)):
-        return False
-    #  Sender ok, and end of line
-    if(string == True):
-        return True
-    #   Sender ok, not end of line
-    if(len(string) > 1):
-        return string
+    return CRLF(string)
 
 #   Makes sure the 'RCPT TO:' command has been typed correctly
 
@@ -304,12 +288,19 @@ def forward_path(string):
 
 #   Takes line of input and appends to list of RCPT TO: files
 def data(string):
-    echo(string)
+    restOfString = echo(string)
+    copy = string
+    counter = 0
     if(string[0] == '.'):
         if(CRLF(string[1:])):
             datas[-1] = datas[-1].rstrip()
             return -2
-    datas.append(string)
+    while(CRLF(copy) == False):
+        copy = copy[1:]
+        counter += 1
+    datas.append(string[:counter+2])
+    if(len(string) > 0):
+        return data(restOfString)
     return -1
 
 #   Makes sure the 'DATA' command has been typed correctly
@@ -320,10 +311,10 @@ def check_data(string):
     if(string[0:4] != "DATA"):
         return False
     string = string[4:]
-    nullspace(string)
-    if(CRLF(string) == False):
-        return False
-    return True
+    #   <nullspace>
+    string = nullspace(string)
+    #   <CRLF>
+    return CRLF(string)
 
 
 #   Gets the mailbox of the RCPT TO: to make a file name
@@ -338,9 +329,13 @@ def getMailbox(string):
         count += 1
     return string[:count]
 
+#   Makes a "From: " string ending in the mailbox
+
 
 def from_(string):
     return "From: <" + getMailbox(string) + ">"
+
+#   Makes a "To: " string ending in the mailbox
 
 
 def to(string):
@@ -377,8 +372,6 @@ def call_command(string, count):
         passCommand = rcpt_to(string)
         if(passCommand != False):
             mailboxs.append(to(string))
-            f = open("forward/" + getMailbox(string), "w+")
-            f.close()
             if(passCommand != True):
                 count = ok250(count)
                 return call_command(passCommand, count)
@@ -386,16 +379,14 @@ def call_command(string, count):
         return error501(string)
     #   DATA
     elif(check_data(string) != False):
+        passCommand = check_data(string)
         if(count < 2):
             return error503(string)
         echo(string)
-        i = 1
-        while(i < len(mailboxs)):
-            f = open("forward/" + getMailbox(mailboxs[i]), "a+")
-            f.close()
-            i += 1
         print("354 Start mail input; end with <CRLF>.<CRLF>")
         count = -1
+        if(passCommand != True):
+            return call_command(passCommand, count)
         return count
     #   Unrecognized command
     else:
@@ -417,7 +408,6 @@ def writeData():
         i += 1
     ok250(0)
     return 0
-
 
 #   500 Syntax error
 
