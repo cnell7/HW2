@@ -19,6 +19,9 @@ datas = []
 
 
 def echo(string):
+    if(string[0] == '\n'):
+        print("")
+        return False
     counter = 0
     copy = string
     while(CRLF(string) == False):
@@ -299,7 +302,7 @@ def data(string):
         copy = copy[1:]
         counter += 1
     datas.append(string[:counter] + '\n')
-    if(len(string) > 0):
+    if(restOfString != False):
         return data(restOfString)
     return -1
 
