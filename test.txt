@@ -204,3 +204,22 @@ DATA
 hwihdwihd
 
 
+
+
+
+
+SUBMISSION 1 FAIL:
+'MAIL\tFROM: <jeffay@cs.unc.edu>\nRCPT\tTO: <test_02_jmoore98@live.unc.edu>\nRCPT\tTO: <test_02_noahj98@live.unc.edu>\nDATA\t\nThis is test message 2.\nThis is a multiline test.\n.\n'
+----------------------------------------------------------
+Test 3:
+'MAIL \tFROM: <jeffay@cs.unc.edu>\nRCPT \tTO: <test_03_jmoore98@live.unc.edu>\nRCPT \tTO: <test_03_noahj98@live.unc.edu>\nRCPT \tTO: <test_03_alice@cs.unc.edu>\nDATA \t\nThis is test message 3.\ntest\ntest\ntest\n.\n'
+----------------------------------------------------------
+Test 4:
+'MAIL\t \tFROM: <jeffay@cs.unc.edu>\nRCPT\t \tTO: <test_04_jmoore98@live.unc.edu>\nDATA\t \t\nThis is test message 4\na\na\n..\na\n.\n'
+----------------------------------------------------------
+Test 5:
+'MAIL \t\tFROM: <jeffay@cs.unc.edu>\nRCPT \t\tTO: <test_05_jmoore98@live.unc.edu>\nRCPT \t\tTO: <test_05_noahj98@cs.unc.edu>\nDATA \t\t\nThis is test message 5\n\n\n.\n'
+----------------------------------------------------------
+Test 6:
+'MAIL  \t\tFROM:<jeffay@cs.unc.edu>\nRCPT  \t\tTO: <test_06_jmoore98@live.unc.edu>\nRCPT  \t\tTO: <test_06_noahj98@cs.unc.edu>\nDATA  \t\t\nThis is test message 6\n.\n'
+

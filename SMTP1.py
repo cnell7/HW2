@@ -48,11 +48,14 @@ def mail_from_cmd(string):
         return False
     #   <CLRF>
     string = CRLF(string)
-    if(string == False):
+    if(not(string)):
         return False
     #  Sender ok, and end of line
     if(string == True):
         return True
+    #   Sender ok, not end of line
+    if(len(string) > 1):
+        return string
 
 
 def check_mail_from(string):
@@ -263,7 +266,12 @@ def rcpt_to(string):
     string = CRLF(string)
     if(not(string)):
         return False
-    return True
+    #  Sender ok, and end of line
+    if(string == True):
+        return True
+    #   Sender ok, not end of line
+    if(len(string) > 1):
+        return string
 
 #   Makes sure the 'RCPT TO:' command has been typed correctly
 
@@ -343,6 +351,7 @@ def to(string):
 
 
 def call_command(string, count):
+    passCommand = False
     #   DATA (store input, then write)
     if(count == -1):
         copy = data(string)
@@ -353,18 +362,26 @@ def call_command(string, count):
     elif(check_mail_from(string) != False):
         if(count != 0):
             return error503(string)
-        if(mail_from_cmd(string)):
+        passCommand = mail_from_cmd(string)
+        if(passCommand != False):
             mailboxs.append(from_(string))
+            if(passCommand != True):
+                count = ok250(count)
+                return call_command(passCommand, count)
             return ok250(count)
         return error501(string)
     #   RCPT TO:
     elif(check_rcpt_to(string) != False):
         if(count < 1):
             return error503(string)
-        if(rcpt_to(string)):
+        passCommand = rcpt_to(string)
+        if(passCommand != False):
             mailboxs.append(to(string))
             f = open("forward/" + getMailbox(string), "w+")
             f.close()
+            if(passCommand != True):
+                count = ok250(count)
+                return call_command(passCommand, count)
             return ok250(count)
         return error501(string)
     #   DATA
