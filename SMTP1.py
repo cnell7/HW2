@@ -28,7 +28,10 @@ def echo(string):
         string = string[1:]
         counter += 1
     print(copy[0:counter])
-    return string[2:]
+    string = string[2:]
+    if(len(string) < 1):
+        return True
+    return string
 
 #############################################################
 ##############            MAIL FROM            ##############
@@ -302,9 +305,9 @@ def data(string):
         copy = copy[1:]
         counter += 1
     datas.append(string[:counter] + '\n')
-    if(restOfString != False):
-        return data(restOfString)
-    return -1
+    if(restOfString == False or restOfString == True):
+        return -1
+    return data(restOfString)
 
 #   Makes sure the 'DATA' command has been typed correctly
 
