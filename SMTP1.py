@@ -298,7 +298,7 @@ def data(string):
     while(CRLF(copy) == False):
         copy = copy[1:]
         counter += 1
-    datas.append(string[:counter+2])
+    datas.append(string[:counter] + '\n')
     if(len(string) > 0):
         return data(restOfString)
     return -1
