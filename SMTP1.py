@@ -415,6 +415,7 @@ def writeData():
             f.write(d)
         f.close()
         i += 1
+    ok250(0)
     return 0
 
 
