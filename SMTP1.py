@@ -453,6 +453,8 @@ def main():
     for line in sys.stdin:
         count = call_command(line, count)
         if(not(count)):  # False = start over from MAIL FROM command
+            datas = []
+            mailboxs = []
             count = 0
     if(count != 0):
         error501("Incomplete data input")
