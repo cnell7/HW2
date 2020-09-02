@@ -13,6 +13,7 @@
 #       Signature: _Christian Nell__
 import sys
 import shutil
+rcpts = []
 mailboxs = []
 datas = []
 #   Called to print out incorrect input before returning and showing ERROR -- token
@@ -299,7 +300,6 @@ def data(string):
     counter = 0
     if(string[0] == '.'):
         if(CRLF(string[1:])):
-            datas[-1] = datas[-1].rstrip()
             return -2
     while(CRLF(copy) == False):
         copy = copy[1:]
@@ -377,6 +377,7 @@ def call_command(string, count):
             return error503(string)
         passCommand = rcpt_to(string)
         if(passCommand != False):
+            rcpts.append(getMailbox(string))
             mailboxs.append(to(string))
             if(passCommand != True):
                 count = ok250(count)
@@ -403,15 +404,13 @@ def call_command(string, count):
 
 
 def writeData():
-    i = 1
-    while(i < len(mailboxs)):
-        f = open("forward/"+getMailbox(mailboxs[i]), "a+")
+    for r in rcpts:
+        f = open("forward/"+r, "a+")
         for m in mailboxs:
             f.write(m+'\n')
         for d in datas:
             f.write(d)
         f.close()
-        i += 1
     ok250(0)
     return 0
 
@@ -453,6 +452,9 @@ def main():
     for line in sys.stdin:
         count = call_command(line, count)
         if(not(count)):  # False = start over from MAIL FROM command
+            datas = []
+            mailboxs = []
+            rcpts = []
             count = 0
     if(count != 0):
         error501("Incomplete data input")
