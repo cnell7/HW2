@@ -388,7 +388,7 @@ def call_command(string, count):
     elif(check_data(string) != False):
         passCommand = check_data(string)
         if(count < 2):
-             return error503(string)
+            return error503(string)
         echo(string)
         print("354 Start mail input; end with <CRLF>.<CRLF>")
         count = -1
@@ -414,19 +414,6 @@ def writeData():
     ok250(0)
     return 0
 
-#   Skips incorrect command so rest of line can be tested
-'''
-def skipIncorrect(string):
-    i = 0
-    while (string != False):
-         if(string[i] == '\n'):
-              break
-         if(string[i] == '\\'):
-              if(string[i+1] == 'n'):
-              break
-         i += 1
-    return string[i:]
-''' 
 
 #   500 Syntax error
 
