@@ -388,7 +388,7 @@ def call_command(string, count):
     elif(check_data(string) != False):
         passCommand = check_data(string)
         if(count < 2):
-             return error503(string)
+            return error503(string)
         echo(string)
         print("354 Start mail input; end with <CRLF>.<CRLF>")
         count = -1
