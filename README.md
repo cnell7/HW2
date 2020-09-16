@@ -15,6 +15,8 @@ This part of the SMTP server is finished and fully functional.
 
 
 <data-cmd_> ::= “DATA” <nullspace_> <CRLF_>
+
+
 354 Start mail input; end with <CRLF_>.<CRLF_>
 
 
