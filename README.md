@@ -5,14 +5,26 @@ This part of the SMTP server is finished and fully functional.
 
 -----Grammar-----
 
-<rcpt-to-cmd> ::= “RCPT” <whitespace> “TO:” <nullspace> <forward-path>
-<nullspace> <CRLF>
-<forward-path> ::= <path>
+<rcpt-to-cmd_> ::= “RCPT” <whitespace_> “TO:” <nullspace_> <forward-path_> <nullspace_> <CRLF_>
+
+
+<forward-path_> ::= <path_>
+
+
 250 OK
-<data-cmd> ::= “DATA” <nullspace> <CRLF>
-354 Start mail input; end with <CRLF>.<CRLF>
+
+
+<data-cmd_> ::= “DATA” <nullspace_> <CRLF_>
+354 Start mail input; end with <CRLF_>.<CRLF_>
 
 
 500 Syntax error: command unrecognized
+
+
 501 Syntax error in parameters or arguments
+
+
 503 Bad sequence of commands
+
+
+(Some of the grammar tokens are not the same as the comments in the code. This is because github is hiding the token names inside the <>. That is also why there are extra '_'.)
